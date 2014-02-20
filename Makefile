@@ -439,7 +439,7 @@ package:
 vendor/kibana: | vendor
 	@echo "=> Fetching kibana"
 	$(QUIET)mkdir vendor/kibana || true
-	$(DOWNLOAD_COMMAND) - $(KIBANA_URL) | tar -C $@ -zx --strip-components=1
+	$(DOWNLOAD_COMMAND) - $(KIBANA_URL) | tar -C $@ -zx --strip-components=1 -f -
 
 build/tarball: | build
 	mkdir $@
@@ -463,7 +463,7 @@ prepare-tarball:
 .PHONY: tarball
 tarball: | build/logstash-$(VERSION).tar.gz
 build/logstash-$(VERSION).tar.gz: | prepare-tarball
-	$(QUIET)tar -C $$(dirname $(WORKDIR)) -c $$(basename $(WORKDIR)) \
+	$(QUIET)tar -C $$(dirname $(WORKDIR)) -f - -c $$(basename $(WORKDIR)) \
 		| gzip -9c > $@
 	@echo "=> tarball ready: $@"
 
